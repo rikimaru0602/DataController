@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">DataController0.1</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_reg">RegActivity</string>
+
+    <string name="welcome">Welcome to Data Controller0.1</string>
+    <string name="page_ToMenu">メニューへ</string>
+
+    <string name="page_ImportTop">インポート</string>
+    <string name="page_PlayTop">視聴</string>
+    <string name="page_Export">エクスポート</string>
+    <string name="page_StorageStatus">ストレージ状況</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_menu_fragment">メニューです</string>
+    <string name="title_reg_fragment">アカウント登録</string>
+    <string name="title_activity_imp">ImpActivity</string>
+    <string name="title_activity_exp">ExpActivity</string>
+    <string name="title_activity_str">StrActivity</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="title_activity_play">PlayActivity</string>
+</resources>
