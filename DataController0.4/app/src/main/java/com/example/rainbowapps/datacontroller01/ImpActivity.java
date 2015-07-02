@@ -1,29 +1,35 @@
 package com.example.rainbowapps.datacontroller01;
 
 import android.content.Intent;
-import android.os.Looper;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
-import com.dropbox.client2.exception.DropboxException;
+import com.example.rainbowapps.datacontroller01.Values.ContentsData;
+import com.example.rainbowapps.datacontroller01.adapter.ImportListAdapter2;
+import com.example.rainbowapps.datacontroller01.content.AutoDownloadService;
 
-import java.io.OutputStream;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ImpActivity extends ActionBarActivity implements View.OnClickListener{
 
-    List<String> modifiedList;
+    private ArrayList<String> arrayPath = new ArrayList<>();
+    public String fnameDLMovieList_conf ="DL_MovieList.txt";
+//    public String fnameDLMovieList_conf ="DL_MovieList_Confirm.txt";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_imp);
         View implistButton = findViewById(R.id.button_implist);
         implistButton.setOnClickListener(this);
@@ -32,30 +38,12 @@ public class ImpActivity extends ActionBarActivity implements View.OnClickListen
         View nowButton = findViewById(R.id.button_nowDL);
         nowButton.setOnClickListener(this);
 
-        setModifiedList();
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_imp, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        setMovieList();
+        ListView mListView;
+        ImportListAdapter2 mAdapter;
+        mListView = (ListView) findViewById(R.id.contents_list2);
+        mAdapter = new ImportListAdapter2(this, createContentsDataList());
+        mListView.setAdapter(mAdapter);
     }
 
     @Override
@@ -69,40 +57,51 @@ public class ImpActivity extends ActionBarActivity implements View.OnClickListen
             Intent intent = new Intent(this, SetActivity.class);
             startActivity(intent);
         }else if (id == R.id.button_nowDL) {
-            downloadModifiedList();
+            int fragTrigger =1;
+            Intent intent = new Intent(this, AutoDownloadService.class);
+            intent.putExtra("trigger", fragTrigger);
+
+            Toast.makeText(this, "動画のダウンロードを開始しました。", Toast.LENGTH_LONG).show();
+            this.startService(intent);
+            Toast.makeText(this, "動画のダウンロードを終了しました。", Toast.LENGTH_LONG).show();
         }
     }
 
-    public void setModifiedList(){
-        modifiedList = new ArrayList<String>();
-        modifiedList.add("/Movies/バイオハザード5 マーセナリーズリユニオン DUO 船首甲板 1165k.mp4");
-        modifiedList.add("/Movies/バイオハザード5AE マーセナリーズ リユニオン DUO 船首甲板 ‐.mp4");
+    private List<ContentsData> createContentsDataList() {
+        ArrayList<ContentsData> contentsDataList;
+        contentsDataList = new ArrayList<>();
+        contentsDataList.clear();
+        for(int i =0;i<arrayPath.size();i++) {
+            contentsDataList.add(new ContentsData(arrayPath.get(i)));
+        }
+        return contentsDataList;
     }
 
-    public void downloadModifiedList(){
-        setModifiedList();
-        ImplistActivity activity = new ImplistActivity();
-//        DropBoxAuthActivity.Login();
-//        loadMovie();
-    }
-//
-//    public void loadMovie() {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    mDBApi.getFile("/test.txt", null, OutputStream, null);
-//                    mHandler.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            String fileText = new String(outputStream.toByteArray());
-//                        }
-//                    });
-//                } catch (DropboxException e) {
-//                    Log.e("Download", "Download was failed.");
-//                }
+    public void setMovieList(){
+        //リストをファイルから取得し、アレイに格納
+        BufferedReader br;
+        String line;
+        try {
+            FileInputStream file = openFileInput(fnameDLMovieList_conf);
+            br = new BufferedReader(new InputStreamReader(file));
+            arrayPath.clear();
+            int i =0;
+            //TODO ファイルの有無で判断
+//            if(br.readLine() == null){
+//                Toast.makeText(this,
+//                        "次の更新リストが作成されていません。,更新リストを編集からリストを作成しましょう。",
+//                        Toast.LENGTH_LONG).show();
+//            }else {
+                Log.d("MovieList","-------------from here-------------");
+                while ((line = br.readLine()) != null) {
+                    arrayPath.add(line);
+                    Log.d("MovieList", arrayPath.get(i) + " : "+ i);
+                    i++;
+                }
+                Log.d("MovieList","-------------till here-------------");
 //            }
-//        }).start();
-//    }
-
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

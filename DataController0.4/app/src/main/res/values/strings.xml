@@ -1,11 +1,10 @@
 <resources>
-    <string name="app_name">DataController0.2</string>
-
+    <string name="app_name">MovinOn</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_reg">RegActivity</string>
+    <string name="action_settings">設定変更</string>
+    <string name="title_activity_reg">ユーザー登録</string>
 
-    <string name="welcome">Welcome to Data Controller0.2</string>
+    <string name="welcome">Welcome to MovinOn</string>
     <string name="page_ToMenu">メニューへ</string>
     <string name="ok">OK</string>
     <string name="cancel">キャンセル</string>
@@ -16,14 +15,19 @@
     <string name="notification_description">タップして更新リストを確認しましょう</string>
 
     <string name="page_Top">TOP</string>
+    <string name="page_back">リストに戻る</string>
+    <string name="page_back2">戻る</string>
     <string name="page_ImportTop">インポート</string>
+    <string name="page_ImportTop2">次回のダウンロード動画一覧</string>
     <string name="page_PlayTop">視聴</string>
     <string name="page_Export">エクスポート</string>
     <string name="page_StorageStatus">ストレージ状況</string>
-    <string name="page_ImpList">更新リスト</string>
+    <string name="page_ImpList">更新リストを編集する</string>
+    <string name="page_ImpList2">仮の更新リストです。今はいらない動画のチェックを外し、確定を押してください。</string>
     <string name="page_AddNew">新規追加</string>
-    <string name="page_Settings">設定</string>
-    <string name="page_nowDL">今インポートする</string>
+    <string name="page_AddNew2">追加で欲しい動画をここで選択し、確定を押してください。</string>
+    <string name="page_Settings">設定を変更する</string>
+    <string name="page_nowDL">今すぐインポートする</string>
     <string name="page_NewArrival">新規動画一覧</string>
     <string name="page_Stocks">既存動画一覧</string>
     <string name="page_makeList">更新リスト生成</string>
@@ -42,18 +46,18 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_menu_fragment">メニューです</string>
     <string name="title_reg_fragment">アカウント登録</string>
-    <string name="title_activity_imp">ImpActivity</string>
-    <string name="title_activity_exp">ExpActivity</string>
-    <string name="title_activity_str">StrActivity</string>
-    <string name="title_activity_menu">MenuActivity</string>
-    <string name="title_activity_play">PlayActivity</string>
-    <string name="title_activity_implist">ImplistActivity</string>
-    <string name="title_activity_addnew">AddnewActivity</string>
-    <string name="title_activity_set">SetActivity</string>
-    <string name="title_activity_drop_box_auth">DropBoxAuthActivity</string>
-    <string name="title_activity_file_action_menu">FileActionMenuActivity</string>
+    <string name="title_activity_imp">インポート</string>
+    <string name="title_activity_exp">エクスポート</string>
+    <string name="title_activity_str">ストレージ容量確認画面</string>
+    <string name="title_activity_menu">トップメニュー</string>
+    <string name="title_activity_play">動画視聴トップ</string>
+    <string name="title_activity_implist">ダウンロードリスト作成</string>
+    <string name="title_activity_addnew">新規動画追加</string>
+    <string name="title_activity_set">設定変更</string>
+    <string name="title_activity_new_arrival">新規動画一覧</string>
+    <string name="title_activity_stocks">視聴可能動画一覧</string>
+    <string name="title_activity_play_stocks">動画再生</string>
+    <string name="title_activity_file_action_menu">FileActionActivity</string>
     <string name="title_activity_wifi_info">WifiInfoActivity</string>
-    <string name="title_activity_new_arrival">NewArrivalActivity</string>
-    <string name="title_activity_stocks">StocksActivity</string>
-    <string name="title_activity_play_stocks">PlayStocksActivity</string>
+    <string name="title_activity_play_new_arr">PlayNewArrActivity</string>
 </resources>

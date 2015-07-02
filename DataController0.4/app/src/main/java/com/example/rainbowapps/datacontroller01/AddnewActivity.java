@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -40,11 +38,12 @@ public class AddnewActivity extends ActionBarActivity implements View.OnClickLis
     private ArrayList<String> arrayPathOther = new ArrayList<>();
     private ArrayList<String> arrayRevOther = new ArrayList<>();
     private ListView mListView;
-    private ImportListAdapter mAdapter;
-
     public String fnameDLMovieList = "DL_MovieList.txt";
-    public String fnameDLMovieList_conf = "DL_MovieList_Confirm.txt";
+    public String fnameDLMovieList_conf =" DL_MovieList_Confirm.txt";
     public DropboxAPI<AndroidAuthSession> mDBApi;
+    private ArrayList<String> DBPathArray = new ArrayList<>();
+    private String DBBasePath = "/Movies/";
+    private ArrayList<ArrayList> DBAllArray = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +58,17 @@ public class AddnewActivity extends ActionBarActivity implements View.OnClickLis
         topButton.setOnClickListener(this);
         View makeButton = findViewById(R.id.button_makeList);
         makeButton.setOnClickListener(this);
+        View backButton = findViewById(R.id.button_back3);
+        backButton.setOnClickListener(this);
+
+        DBPathArray.add("GamePlay/");
+        DBPathArray.add("GameTrailer/");
+        DBPathArray.add("MusicVideo/");
+        DBPathArray.add("GoPro/");
 
         setMovieList();
 
+        ImportListAdapter mAdapter;
         mListView = (ListView) findViewById(R.id.contents_list);
         mAdapter = new ImportListAdapter(this, createContentsDataList());
         mListView.setAdapter(mAdapter);
@@ -77,23 +84,6 @@ public class AddnewActivity extends ActionBarActivity implements View.OnClickLis
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_addnew, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if(id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onClick(View v){
         final int id = v.getId();
 
@@ -105,8 +95,11 @@ public class AddnewActivity extends ActionBarActivity implements View.OnClickLis
             Intent intent = new Intent(this, MenuActivity.class);
             startActivity(intent);
         }else if (id == R.id.button_makeList) {
-            makeConfirmList();
+            //makeConfirmList();
             Intent intent = new Intent(this, ImpActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.button_back3) {
+            Intent intent = new Intent(this, ImplistActivity.class);
             startActivity(intent);
         }
     }
@@ -121,8 +114,8 @@ public class AddnewActivity extends ActionBarActivity implements View.OnClickLis
 
     public void setMovieList() {
         //リストをファイルから取得し、アレイに格納
-        BufferedReader br = null;
-        String line = null;
+        BufferedReader br;
+        String line;
         try {
             FileInputStream file = openFileInput(fnameDLMovieList);
             br = new BufferedReader(new InputStreamReader(file));
@@ -136,34 +129,50 @@ public class AddnewActivity extends ActionBarActivity implements View.OnClickLis
         Login();
         //DBからファイル一覧取得
         ArrayList<DropboxAPI.Entry> list = new ArrayList<>();
+        ArrayList<DropboxAPI.Entry> allList = new ArrayList<>();
         int fileLimit = 100;
         try {
-            list = getList("/Movies/", fileLimit, true);
+            int j=0;
+            DBAllArray.clear();
+            while (DBPathArray.size() > j) {
+                list = getList(DBBasePath + DBPathArray.get(j), fileLimit, true);
+                Log.d("PathTest",""+DBBasePath + DBPathArray.get(j));
+                DBAllArray.add(list);
+                j++;
+            }
+//            list = getList("/Movies/", fileLimit, true);
         } catch (DropboxException e) {
             e.printStackTrace();
         }
         DropboxAPI.Entry child;
         //要素ごとに詰め直し
-        for (int i = 0; i < list.size(); i++) {
-            child = list.get(i);
+        for(int j =0 ; j< DBAllArray.size() ; j++) {
+            ArrayList<DropboxAPI.Entry> tmpArray = new ArrayList<>();
+            tmpArray = DBAllArray.get(j);
+            for (int i = 0; i < list.size(); i++) {
+                allList.add(tmpArray.get(i));
+            }
+        }
+        for(int i=0; i<allList.size();i++){
+            child = allList.get(i);
             String path = child.path;
             String rev = child.rev;
             arrayPathOther.add(path);
             arrayRevOther.add(rev);
+            Log.d("PathTest", "" + path);
         }
-
         //DBからの取得リストと既存のMovieListとでpathを照らし合わせ、ないものを抽出
         Iterator<String> i = arrayPathOther.iterator();
         while(i.hasNext()){
             String pathOther = i.next();
             for(int k=0; k<arrayPath.size();k++){
-                if(pathOther.equals(arrayPath.get(k))) i.remove();
+                if(pathOther.equals(arrayPath.get(k))) {
+                    i.remove();
+                }
             }
         }
-
-        Toast.makeText(this, "DropBoxからリストを取得", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "DropBoxからリストを取得", Toast.LENGTH_SHORT).show();
     }
-
 
     public void Login() {
         AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
@@ -200,26 +209,6 @@ public class AddnewActivity extends ActionBarActivity implements View.OnClickLis
         return entryList;
     }
 
-    public void makeConfirmList(){
-        // ファイルにリスト書き込み
-        try {
-            System.out.println("Test: " + deleteFile(fnameDLMovieList_conf));
-            FileOutputStream output = openFileOutput(fnameDLMovieList_conf, MODE_PRIVATE);
-            // 書き込み
-            String str;
-            for(int i=0; i < arrayPathOther.size() ; i++) {
-                str = arrayPathOther.get(i) + "\n";
-                output.write(str.getBytes());
-            }
-            // ストリームを閉じる
-            output.close();
-            Toast.makeText(this,
-                    "ダウンロードリストを確定しました。指定ネットワークに接続し次第、自動ダウンロードを開始します。",
-                    Toast.LENGTH_LONG).show();
-        } catch (IOException e2) {
-            e2.printStackTrace();
-        }
-    }
 
     public void modifyMovieList() {
         SparseBooleanArray checkedItemPositions = mListView.getCheckedItemPositions();
@@ -242,10 +231,9 @@ public class AddnewActivity extends ActionBarActivity implements View.OnClickLis
                 addCount++;
             }
         }
-        // ファイルにリスト書き込み
+        // ファイルに追加書き込み
         try {
-            //System.out.println("Test: " + deleteFile(fnameDLMovieList));
-            FileOutputStream output = openFileOutput(fnameDLMovieList, MODE_PRIVATE);
+            FileOutputStream output = openFileOutput(fnameDLMovieList, MODE_PRIVATE | MODE_APPEND);
             // 書き込み
             String str;
             for(int i=0; i < arrayPathOther.size() ; i++) {
@@ -254,7 +242,7 @@ public class AddnewActivity extends ActionBarActivity implements View.OnClickLis
             }
             // ストリームを閉じる
             output.close();
-            Toast.makeText(this, "ダウンロードリストを更新しました("+addCount+"件を追加)", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "取得する動画リストを更新しました("+addCount+"件を追加)", Toast.LENGTH_LONG).show();
         } catch (IOException e2) {
             e2.printStackTrace();
         }

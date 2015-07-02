@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">MovinOn</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">設定変更</string>
+    <string name="title_activity_reg">ユーザー登録</string>
+
+    <string name="welcome">Welcome to MovinOn</string>
+    <string name="page_ToMenu">メニューへ</string>
+    <string name="ok">OK</string>
+    <string name="cancel">キャンセル</string>
+
+    <string name="notification_title">更新リスト作成</string>
+    <string name="notification_ticker">更新リスト</string>
+    <string name="notification_contents_title">更新動画一覧</string>
+    <string name="notification_description">タップして更新リストを確認しましょう</string>
+
+    <string name="page_Top">TOP</string>
+    <string name="page_back">リストに戻る</string>
+    <string name="page_back2">戻る</string>
+    <string name="page_ImportTop">インポート</string>
+    <string name="page_ImportTop2">次回のダウンロード動画一覧</string>
+    <string name="page_PlayTop">視聴</string>
+    <string name="page_Export">エクスポート</string>
+    <string name="page_StorageStatus">ストレージ状況</string>
+    <string name="page_ImpList">次回DLリストを編集</string>
+    <string name="page_ImpList2">いらない動画のチェックを外し、「確定」をタップ</string>
+    <string name="page_AddNew">新規追加</string>
+    <string name="page_AddNew2">追加で欲しい動画を選択し、「確定」をタップ</string>
+    <string name="page_Settings">設定を変更</string>
+    <string name="page_nowDL">今すぐインポート</string>
+    <string name="page_NewArrival">新規動画一覧</string>
+    <string name="page_Stocks">既存動画一覧</string>
+    <string name="page_makeList">更新リスト生成</string>
+    <string name="text_confirm">確定</string>
+    <string name="text_delAcc">アカウント削除</string>
+    <string name="text_onService">サービス開始</string>
+    <string name="text_offService">サービス停止</string>
+    <string name="check_init">未入力</string>
+    <string name="comment_accNA">ユーザー名を入力</string>
+    <string name="comment_accOS">オンラインストレージのアカウントを入力</string>
+    <string name="comment_SSID">ダウンロードを行うネットワーク名を入力</string>
+    <string name="schedule_setting_title">更新リスト作成時間の設定</string>
+    <string name="schedule_message" formatted = "false">%d時%d分に設定しました</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_menu_fragment">メニューです</string>
+    <string name="title_reg_fragment">アカウント登録</string>
+    <string name="title_activity_imp">インポート　トップ</string>
+    <string name="title_activity_exp">エクスポート</string>
+    <string name="title_activity_str">ストレージ容量確認画面</string>
+    <string name="title_activity_menu">トップメニュー</string>
+    <string name="title_activity_play">動画視聴トップ</string>
+    <string name="title_activity_implist">更新リスト編集</string>
+    <string name="title_activity_addnew">新規動画追加</string>
+    <string name="title_activity_set">設定変更</string>
+    <string name="title_activity_new_arrival">新規動画一覧</string>
+    <string name="title_activity_stocks">視聴可能動画一覧</string>
+    <string name="title_activity_play_stocks">動画再生</string>
+    <string name="title_activity_file_action_menu">FileActionActivity</string>
+    <string name="title_activity_wifi_info">WifiInfoActivity</string>
+    <string name="title_activity_play_new_arr">PlayNewArrActivity</string>
+</resources>

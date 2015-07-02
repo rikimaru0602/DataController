@@ -1,0 +1,84 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical">
+
+    <!--戻る-->
+    <Button
+        android:id="@+id/button_back_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:background="@null"
+        android:text="@string/page_back2"
+        android:textColor="#0000FF" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="200dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <!-- 新規動画リスト -->
+        <LinearLayout
+            android:id="@+id/button_NewArrival"
+            android:background="@drawable/button_information"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:padding="8dp"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_new_releases_black_24dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="@string/page_NewArrival"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+
+        <!-- 既存動画リスト -->
+        <LinearLayout
+            android:id="@+id/button_Stocks"
+            android:background="@drawable/button_information"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:padding="8dp"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_video_library_black_24dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="@string/page_Stocks"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

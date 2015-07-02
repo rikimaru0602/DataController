@@ -11,9 +11,18 @@
         android:gravity="center_horizontal"
         android:orientation="vertical" >
         <TextView
-            android:text="@string/page_ImportTop"
+            android:text="@string/page_ImportTop2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <ListView
+            android:id="@+id/contents_list2"
+            android:layout_width="match_parent"
+            android:layout_height="700dip"
+            android:clipToPadding="false"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:scrollbarStyle="outsideOverlay" />
+
     </LinearLayout>
     <!-- 更新リスト-->
     <Button

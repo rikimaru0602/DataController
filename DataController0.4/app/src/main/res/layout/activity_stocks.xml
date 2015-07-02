@@ -17,13 +17,23 @@
         android:scrollbarStyle="outsideOverlay" />
 
     <Button
-        android:id="@+id/button_PlayTest"
+        android:id="@+id/button_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@null"
-        android:text="@string/page_PlayTop"
+        android:text="@string/page_Top"
+        android:textColor="#0000FF" />
+
+    <Button
+        android:id="@+id/button_NewArrival"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@null"
+        android:text="@string/page_NewArrival"
         android:textColor="#0000FF" />
 
 </RelativeLayout>

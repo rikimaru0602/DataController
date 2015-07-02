@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.rainbowapps.datacontroller01"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="7" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".DropBoxAuthActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.dropbox.client2.android.AuthActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <data android:scheme="db-adttr9ats1zypbz" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".RegActivity"
+            android:label="@string/title_activity_reg" >
+        </activity>
+        <activity
+            android:name=".ImpActivity"
+            android:label="@string/title_activity_imp" >
+        </activity>
+        <activity
+            android:name=".ExpActivity"
+            android:label="@string/title_activity_exp" >
+        </activity>
+        <activity
+            android:name=".StrActivity"
+            android:label="@string/title_activity_str" >
+        </activity>
+        <activity
+            android:name=".MenuActivity"
+            android:label="@string/title_activity_menu" >
+        </activity>
+        <activity
+            android:name=".PlayActivity"
+            android:label="@string/title_activity_play" >
+        </activity>
+        <activity
+            android:name=".ImplistActivity"
+            android:label="@string/title_activity_implist" >
+        </activity>
+        <activity
+            android:name=".AddnewActivity"
+            android:label="@string/title_activity_addnew" >
+        </activity>
+        <activity
+            android:name=".SetActivity"
+            android:label="@string/title_activity_set" >
+        </activity>
+
+        <receiver android:name=".content.ImportScheduleReceiver" >
+        </receiver>
+
+        <activity
+            android:name=".Values.WifiInfoActivity"
+            android:label="@string/title_activity_wifi_info" >
+        </activity>
+
+        <!-- 端末起動時にバッチを呼ぶレシーバ -->
+        <receiver android:name=".content.OnBootReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- サンプルのサービス -->
+        <service android:name=".content.SamplePeriodicService" />
+        <!-- <service android:name=".content.AutoDownloadService"/> -->
+
+        <activity
+            android:name=".NewArrivalActivity"
+            android:label="@string/title_activity_new_arrival" >
+        </activity>
+        <activity
+            android:name=".StocksActivity"
+            android:label="@string/title_activity_stocks" >
+        </activity>
+        <activity
+            android:name=".PlayStocksActivity"
+            android:label="@string/title_activity_play_stocks" >
+        </activity>
+
+        <service
+            android:name=".content.AutoDownloadService"
+            android:exported="false" >
+        </service>
+
+        <activity
+            android:name=".PlayNewArrActivity"
+            android:label="@string/title_activity_play_new_arr" >
+        </activity>
+
+        <service
+            android:name=".content.AutoDeleteService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <receiver android:name=".content.AutoDeleteReceiver" android:process=":remote" />
+
+    </application>
+
+</manifest>

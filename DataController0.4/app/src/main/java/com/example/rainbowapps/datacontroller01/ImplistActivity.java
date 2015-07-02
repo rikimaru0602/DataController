@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,7 +25,6 @@ import com.example.rainbowapps.datacontroller01.utility.ImportScheduleUtils;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -43,14 +41,13 @@ public class ImplistActivity extends ActionBarActivity
 
     private static final String TAG_SETTING_SCHEDULE = "settings_schedule";
     private ArrayList<ContentsData> contentsDataList;
-    private String path;
-    private String rev;
-    private ArrayList<DropboxAPI.Entry> list;
     private ArrayList<String> arrayPath = new ArrayList<>();
     private ArrayList<String> arrayRev = new ArrayList<>();
+    private ArrayList<String> DBPathArray = new ArrayList<>();
+    private ArrayList<DropboxAPI.Entry> list = new ArrayList<>();
+    private ArrayList<ArrayList> DBAllArray = new ArrayList<>();
+    private String DBBasePath = "/Movies/";
     private ListView mListView;
-    private ImportListAdapter mAdapter;
-
     public String fnameDLMovieList = "DL_MovieList.txt";
     public DropboxAPI<AndroidAuthSession> mDBApi;
 
@@ -67,21 +64,23 @@ public class ImplistActivity extends ActionBarActivity
         confirmButton.setOnClickListener(this);
         View topButton = findViewById(R.id.button_top);
         topButton.setOnClickListener(this);
+        View backButton = findViewById(R.id.button_back2);
+        backButton.setOnClickListener(this);
+
+        //見るDropBoxファイルパス登録
+        DBPathArray.add("GamePlay/");
+        DBPathArray.add("GameTrailer/");
+        DBPathArray.add("MusicVideo/");
+        DBPathArray.add("GoPro/");
 
         //動画リスト取得
         setMovieList();
-
+        ImportListAdapter mAdapter;
         mListView = (ListView) findViewById(R.id.contents_list);
         mAdapter = new ImportListAdapter(this, createContentsDataList());
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);
         mListView.setChoiceMode(mListView.CHOICE_MODE_MULTIPLE);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_implist, menu);
-        return true;
     }
 
     @Override
@@ -98,7 +97,6 @@ public class ImplistActivity extends ActionBarActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
         CheckBox chk = (CheckBox) view.findViewById(R.id.checkbox);
         chk.setChecked(!chk.isChecked());
         SparseBooleanArray checkedItemPositions = mListView.getCheckedItemPositions();
@@ -128,6 +126,9 @@ public class ImplistActivity extends ActionBarActivity
         } else if (id == R.id.button_top) {
             Intent intent = new Intent(this, MenuActivity.class);
             startActivity(intent);
+        } else if (id == R.id.button_back2) {
+            Intent intent = new Intent(this, ImpActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -154,7 +155,6 @@ public class ImplistActivity extends ActionBarActivity
 
     public void modifyMovieList() {
         SparseBooleanArray checkedItemPositions = mListView.getCheckedItemPositions();
-        StringBuilder sb = new StringBuilder();
         ArrayList<Boolean> bl = new ArrayList<>();
        //選択ステータスの表示
         for (int position = 0; position < arrayPath.size(); position++) {
@@ -166,9 +166,9 @@ public class ImplistActivity extends ActionBarActivity
         Iterator<Boolean> ib = bl.iterator();
         int rmCount=0;
         while (is.hasNext()){
-            String vals  = is.next();
+            is.next();
             boolean valb = ib.next();
-            if(valb == false) {
+            if(!valb) {
                 is.remove();
                 ib.remove();
                 rmCount++;
@@ -182,30 +182,31 @@ public class ImplistActivity extends ActionBarActivity
             String str;
             for(int i=0; i < arrayPath.size() ; i++) {
                 str = arrayPath.get(i) + "\n";
+                Log.d("Write",""+str);
                 output.write(str.getBytes());
             }
             // ストリームを閉じる
             output.close();
             Toast.makeText(this, "ダウンロードリストを更新しました("+rmCount+"件を削除)", Toast.LENGTH_LONG).show();
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
         } catch (IOException e2) {
             e2.printStackTrace();
         }
     }
 
     public void setMovieList(){
-
+        String path;
+        String rev;
+//        ArrayList<DropboxAPI.Entry> list;
         //リストをファイルから取得し、アレイに格納
-        BufferedReader br = null;
-        String line = null;
+        BufferedReader br;
+        String line;
         try {
+//            Log.d("ListPath",""+fnameDLMovieList);
             FileInputStream file = openFileInput(fnameDLMovieList);
             br = new BufferedReader(new InputStreamReader(file));
-            int i=0;
+            arrayPath.clear();
             while ((line = br.readLine()) != null) {
                 arrayPath.add(line);
-                i++;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -217,21 +218,36 @@ public class ImplistActivity extends ActionBarActivity
             //接続認証
             Login();
             //ファイル一覧取得
-            list = new ArrayList<>();
+
             int fileLimit = 100;
+
             try {
-                list = getList("/Movies/", fileLimit, true);
+                int j=0;
+                DBAllArray.clear();
+                while (DBPathArray.size() > j) {
+//                    list = getList(DBBasePath + DBPathArray.get(j), fileLimit, true);
+                    list = getList(DBBasePath + DBPathArray.get(j), fileLimit, true);
+                    DBAllArray.add(list);
+                    j++;
+                }
+//                list = getList("/Movies/", fileLimit, true);
             } catch (DropboxException e) {
+                ReLogin();
                 e.printStackTrace();
+//                Intent intent = new Intent(this, ImplistActivity.class);
+//                startActivity(intent);
             }
             DropboxAPI.Entry child;
             //要素ごとに詰め直し
-            for (int i = 0; i < list.size(); i++) {
-                child = list.get(i);
-                path = child.path;
-                rev = child.rev;
-                arrayPath.add(path);
-                arrayRev.add(rev);
+            for(int j =0 ; j< DBAllArray.size() ; j++) {
+                list = DBAllArray.get(j);
+                for (int i = 0; i < list.size(); i++) {
+                    child = list.get(i);
+                    path = child.path;
+                    rev = child.rev;
+                    arrayPath.add(path.substring(8-1));
+                    arrayRev.add(rev);
+                }
             }
 
             // ファイルにリスト書き込み
@@ -246,8 +262,6 @@ public class ImplistActivity extends ActionBarActivity
                 }
                 // ストリームを閉じる
                 output.close();
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
             } catch (IOException e2) {
                 e2.printStackTrace();
             }
@@ -274,6 +288,15 @@ public class ImplistActivity extends ActionBarActivity
             mDBApi.getSession().setOAuth2AccessToken(accessToken);
             Log.d("DB Login:Implist", "Login Automatically.");
         }
+
+    }
+
+    public void ReLogin(){
+        AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
+        AndroidAuthSession session = new AndroidAuthSession(appKeys);
+        mDBApi = new DropboxAPI<>(session);
+        mDBApi.getSession().startOAuth2Authentication(this);
+        Log.d("DB Login", "Token saved.");
 
     }
 }

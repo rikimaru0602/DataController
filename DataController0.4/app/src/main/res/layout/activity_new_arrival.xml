@@ -16,4 +16,24 @@
         android:choiceMode="multipleChoice"
         android:scrollbarStyle="outsideOverlay" />
 
+    <Button
+        android:id="@+id/button_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@null"
+        android:text="@string/page_Top"
+        android:textColor="#0000FF" />
+
+    <Button
+        android:id="@+id/button_Stocks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@null"
+        android:text="@string/page_Stocks"
+        android:textColor="#0000FF" />
+
 </RelativeLayout>
